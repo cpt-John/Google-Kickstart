@@ -1,3 +1,7 @@
+// link to the problem :
+// https://code.google.com/codejam/contest/11304486/dashboard
+
+
 list_pw =list()
 for each in range (-1,10000):list_pw.append(int(2**each))
 list_pw = tuple(list_pw)
