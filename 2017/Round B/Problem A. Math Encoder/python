@@ -16,8 +16,9 @@ def claculate(T):
             in_indx = index+i
     return total
 
-
-handle = open('A-small-practice.in')
+in_file_name = 'A-small-practice.in'
+out_file_name = in_file_name[:in_file_name.find('.')]+'.out'
+handle = open(in_file_name)
 
 line_inx = 1
 output_s = ''
@@ -31,6 +32,6 @@ for line in handle:
     line_inx += 1
 
 handle.close()
-out_file = open('output_large.txt', 'w')
+out_file = open(out_file_name, 'w')
 out_file.write(output_s)
 out_file.close()
