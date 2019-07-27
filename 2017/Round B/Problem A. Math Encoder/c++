@@ -1,0 +1,97 @@
+// link to the problem :
+// https://code.google.com/codejam/contest/11304486/dashboard
+
+
+#include <iostream>
+#include <algorithm>
+#include <fstream>
+#include <string>
+#include <vector>
+using namespace std;
+const int MOD = 1e9 + 7;
+
+long claculate(vector<int> T, long list_pw[])
+{
+    sort(T.begin(), T.end());
+    int length = T.size();
+    long long total = 0;
+    for (int index = 0; index < length; index++)
+    {
+        int i = 0;
+        int in_indx = index + i;
+        while (in_indx < length)
+        {
+            long long diff = (T[in_indx] - T[index]);
+            long long pow = list_pw[i];
+            total %= MOD;
+            total += (diff * pow) % MOD;
+            i++;
+            in_indx = index + i;
+        }
+    }
+    return total % MOD;
+}
+
+vector<int> parse2arr(string line, int len)
+{
+    vector<int> array(len);
+    string num_s = "";
+    int a_index = 0;
+    int n = line.length();
+    for (int l = 0; l < n + 1; l++)
+    {
+        if (line[l] != ' ' && l != n)
+        {
+            num_s += line[l];
+            continue;
+        }
+        array[a_index] = stoi(num_s);
+        a_index++;
+        num_s = "";
+    }
+    return array;
+}
+
+int main()
+{
+    long list_pw[10001];
+    list_pw[0] = 0;
+    list_pw[1] = 1;
+    for (int i = 2; i < 10001; i++)
+    {
+        list_pw[i] = (2 * list_pw[i - 1]) % (MOD);
+    }
+    
+    
+     string in_file_name = "A-small-practice.in";
+    //string in_file_name = "A-large-practice.in";
+    
+    
+    string out_file_name = in_file_name.substr(0, in_file_name.find('.')) + ".out";
+    ifstream file(in_file_name);
+
+    string str;
+    int l_index = 0;
+    string output_s = "";
+    while (getline(file, str))
+    {
+        int len;
+        if (l_index == 0)
+            ;
+        else if (l_index % 2)
+            len = stoi(str);
+        else
+        {
+            long ans = claculate(parse2arr(str, len), list_pw);
+            output_s += string("Case #") + to_string(l_index / 2) + ": " + to_string(ans) + "\n";
+        }
+        l_index++;
+    }
+    file.close();
+    cout << output_s;
+
+    ofstream out_file(out_file_name);
+    out_file << output_s;
+    out_file.close();
+    return 0;
+}
