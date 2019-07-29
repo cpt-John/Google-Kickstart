@@ -1,0 +1,98 @@
+    
+// link to the problem :
+// https://code.google.com/codejam/contest/11304486/dashboard
+
+
+import java.util.Arrays;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+
+public class Main {
+    static int MOD = (int) 1e9 + 7;
+
+    static long claculate(int T[], long list_pw[]) {
+        Arrays.sort(T);
+        int length = T.length;
+        long total = 0;
+        for (int index = 0; index < length; index++) {
+            int i = 0;
+            int in_indx = index + i;
+            while (in_indx < length) {
+                long diff = (T[in_indx] - T[index]);
+                long pow = list_pw[i];
+                total %= MOD;
+                total += (diff * pow) % MOD;
+                i++;
+                in_indx = index + i;
+            }
+        }
+        return total % MOD;
+    }
+
+    static int[] parse2arr(String line, int len) {
+        int array[] = new int[len];
+        String num_s = "";
+        int a_index = 0;
+        int n = line.length();
+
+        for (int l = 0; l < (n + 1); l++) {
+            if (l != n && line.charAt(l) != ' ') {
+                num_s += line.charAt(l);
+                continue;
+            }
+            array[a_index] = Integer.parseInt(num_s);
+            a_index++;
+            num_s = "";
+        }
+        return array;
+    }
+
+    public static void main(String[] args) {
+        long list_pw[] = new long[10001];
+        list_pw[0] = 0;
+        list_pw[1] = 1;
+        for (int i = 2; i < 10001; i++) {
+            list_pw[i] = (2 * list_pw[i - 1]) % (MOD);
+        }
+        // String in_file_name = "A-small-practice.in";
+        String in_file_name = "A-large-practice.in";
+        String out_file_name = in_file_name.substring(0, in_file_name.indexOf('.')) + ".out";
+        String output_s = "";
+
+        try {
+            FileReader file = new FileReader(in_file_name);
+            BufferedReader br = new BufferedReader(file);
+            String str;
+            int l_index = 0;
+            int len = 0;
+            while ((str = br.readLine()) != null) {
+                if (l_index == 0)
+                    ;
+                else if (l_index % 2 == 1)
+                    len = Integer.parseInt(str);
+                else {
+                    long ans = claculate(parse2arr(str, len), list_pw);
+                    output_s += "Case #" + (l_index / 2) + ": " + (ans) + "\n";
+                }
+                l_index++;
+            }
+            br.close();
+            file.close();
+
+            System.out.println(output_s);
+        } catch (Exception ex) {
+            System.out.println(ex);
+        }
+
+        try {
+            FileWriter fw = new FileWriter(out_file_name);
+            fw.write(output_s);
+            fw.close();
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+    }
+}
