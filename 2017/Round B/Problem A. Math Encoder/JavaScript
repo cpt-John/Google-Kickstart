@@ -1,0 +1,58 @@
+// link to the problem :
+// https://code.google.com/codejam/contest/11304486/dashboard
+
+let MOD = 1e9 + 7;
+let list_pw = [];
+list_pw[0] = 0;
+list_pw[1] = 1;
+for (i = 1; i < 10000; i++) {
+  let x = 2 * list_pw[i];
+  list_pw.push(x % MOD);
+}
+function claculate(T) {
+  let length = T.length;
+  let total = 0;
+  for (index = 0; index < length; index++) {
+    let i = 0;
+    let in_indx = index + i;
+    while (in_indx < length) {
+      let diff = T[in_indx] - T[index];
+      let pow = list_pw[i];
+      total %= MOD;
+      total += (diff * pow) % MOD;
+      i++;
+      in_indx = index + i;
+    }
+  }
+  return total;
+}
+
+// let in_file_name = "A-small-practice.in";
+let in_file_name = "A-large-practice.in";
+let out_file_name =
+  in_file_name.substring(0, in_file_name.indexOf(".")) + ".out";
+
+let fs = require("fs");
+let handle = fs.readFileSync(in_file_name);
+let textByLine = handle.toString().split("\n");
+
+let line_inx = 1;
+let output_s = "";
+
+textByLine.forEach(function(line) {
+  if (line.split(" ").length == 1) {
+  } else {
+    let in_list = line.split(" ");
+    in_list.forEach(function(num) {
+      in_list[in_list.indexOf(num)] = parseInt(num, 10);
+    });
+    ans = claculate(in_list);
+
+    ans = ans % MOD;
+    output_s += `Case #${line_inx}: ${ans}\n`;
+    console.log(`\nCase #${line_inx}: ${ans}\n`);
+    line_inx += 1;
+  }
+});
+fs = require("fs");
+fs.writeFileSync(out_file_name, output_s);
