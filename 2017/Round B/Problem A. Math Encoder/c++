@@ -40,7 +40,7 @@ vector<int> parse2arr(string line, int len)
     int n = line.length();
     for (int l = 0; l < n + 1; l++)
     {
-        if (line[l] != ' ' && l != n)
+        if ( l != n && line[l] != ' ')
         {
             num_s += line[l];
             continue;
