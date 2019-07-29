@@ -1,37 +1,42 @@
-// link to the problem :
-// https://code.google.com/codejam/contest/11304486/dashboard
+# link to the problem :
+# https://code.google.com/codejam/contest/11304486/dashboard
 
-
-list_pw =list()
-for each in range (-1,10000):list_pw.append(int(2**each))
+MOD = 1e9+7
+list_pw = list()
+list_pw.append(0)
+list_pw.append(1)
+for each in range(2, 10000):
+    list_pw.append(int((2*list_pw[each-1]) % MOD))
 list_pw = tuple(list_pw)
 
 
 def claculate(T):
-    T = tuple(sorted(T))
+    T = tuple(T)
     length = len(T)
     total = 0
     for index, each in enumerate(T):
         i = 0
         in_indx = index+i
-        while (in_indx) < length :
-            total += (T[in_indx]-each)*(list_pw[i])   #2**(i-1)
+        while (in_indx) < length:
+            total += (T[in_indx]-each)*(list_pw[i])
+            total %= MOD
             i += 1
             in_indx = index+i
-    return total
+    return int(total)
 
-in_file_name = 'A-small-practice.in'
-// string in_file_name = "A-large-practice.in";
+
+# in_file_name = 'A-small-practice.in'
+in_file_name = "A-large-practice.in"
 out_file_name = in_file_name[:in_file_name.find('.')]+'.out'
 handle = open(in_file_name)
 
 line_inx = 1
 output_s = ''
 for line in handle:
-    if len(line.split()) == 1:continue
+    if len(line.split()) == 1:
+        continue
     in_list = [int(ele) for ele in line.split()]
     ans = claculate(in_list)
-    ans = ans % 1000000007
     output_s += f'Case #{line_inx}: {ans}\n'
     print(f'\nCase #{line_inx}: {ans}\n')
     line_inx += 1
